@@ -1,0 +1,11 @@
+{
+  "name": "abstudia",
+  "version": "0.1.0",
+  "description": "A personal task management web application designed to help users effectively manage their time.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "twetto912",
+  "license": "MIT"
+}
