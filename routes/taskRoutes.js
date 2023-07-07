@@ -1,18 +1,11 @@
 const express = require('express')
 const router = express.Router()
-
+const taskController = require('../controllers/taskController');
 const Task = require('../models/Task')
 
-router.get('/', async (req, res) => {
-  const tasks = await Task.find({})
-  res.json(tasks)
-})
-
-router.post('/', async (req, res) => {
-  const newTask = new Task(req.body)
-  const savedTask = await newTask.save()
-  res.json(savedTask)
-})
+router.get('/', taskController.getTasks);
+router.post('/', taskController.createTask);
+router.delete('/:id', taskController.deleteTask);
 
 module.exports = router
 
