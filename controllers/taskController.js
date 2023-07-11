@@ -7,6 +7,10 @@ exports.getTasks = async (req, res) => {
 };
 
 exports.createTask = async (req, res) => {
+  if (!req.body || req.body.title.trim() === "") {
+    res.status(400).json({ message: "Invalid task input" });
+    return;
+  }
   const newTask = new Task(req.body)
   const savedTask = await newTask.save()
   res.json(savedTask)
