@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const taskRouter = require('./routes/taskRoutes')
+const authRouter = require('./routes/authRoutes')
 const app = express()
 const port = 3000
 
@@ -18,6 +19,7 @@ db.once('open', () => {
 
 app.use(express.json()) // for parsing application/json
 app.use('/tasks', taskRouter)
+app.use('/auth', authRouter)
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
