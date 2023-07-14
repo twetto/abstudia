@@ -41,15 +41,22 @@ exports.login = (req, res, next) => {
   })(req, res, next);
 };
 
+exports.logout = (req, res) => {
+  req.logout(function(err) {
+    if (err) { return next(err); }
+    res.json({ message: 'Logged out' });
+  });
+};
+
 exports.ensureAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   } else {
     res.status(401).json({ message: "Unauthorized" });
   }
-}
+};
 
-// Add other auth-related functions (signup, logout) here
+// Add other auth-related functions (signup) here
 
 //
 

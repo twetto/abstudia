@@ -11,10 +11,7 @@ router.post('/register', async (req, res) => {
 router.post('/login', authController.login);
 
 // Logout
-router.get('/logout', (req, res) => {
-  req.logout();
-  res.json({ message: 'Logged out' });
-});
+router.get('/logout', authController.logout);
 
 module.exports = router;
 
