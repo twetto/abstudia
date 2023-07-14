@@ -21,7 +21,6 @@ db.once('open', () => {
 })
 
 app.use(express.json()) // for parsing application/json
-app.use('/tasks', taskRouter)
 
 app.use(session({
   secret: 'keyboard cat', // Change this secret to a long, complex random string!
@@ -36,6 +35,7 @@ app.use(authController.passport.initialize())
 app.use(authController.passport.session())
 
 app.use('/auth', authRouter)
+app.use('/tasks', taskRouter)
 
 app.get('/', (req, res) => {
   res.send('Hello World!')

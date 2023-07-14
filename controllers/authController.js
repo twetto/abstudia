@@ -19,9 +19,9 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-  User.findById(id, (err, user) => {
-    done(err, user);
-  });
+  User.findById(id)
+    .then(user => done(null, user))
+    .catch(err => done(err));
 });
 
 exports.login = (req, res, next) => {
@@ -40,6 +40,14 @@ exports.login = (req, res, next) => {
     });
   })(req, res, next);
 };
+
+exports.ensureAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) {
+    return next();
+  } else {
+    res.status(401).json({ message: "Unauthorized" });
+  }
+}
 
 // Add other auth-related functions (signup, logout) here
 
