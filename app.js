@@ -23,7 +23,7 @@ db.once('open', () => {
 app.use(express.json()) // for parsing application/json
 
 app.use(session({
-  secret: 'keyboard cat', // Change this secret to a long, complex random string!
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({ 
