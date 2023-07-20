@@ -1,11 +1,18 @@
 require('dotenv').config()
+
 const express = require('express')
 const session = require('express-session')
+
 const mongoose = require('mongoose')
 const MongoStore = require('connect-mongo')
+
 const taskRouter = require('./routes/taskRoutes')
 const authRouter = require('./routes/authRoutes')
 const authController = require('./controllers/authController')
+
+const https = require('https')
+const fs = require('fs')
+
 const app = express()
 const port = 3000
 
@@ -44,9 +51,15 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+const httpsOptions = {
+  key: fs.readFileSync('./private.key'),
+  cert: fs.readFileSync('./certificate.pem')
+};
+
+https.createServer(httpsOptions, app)
+.listen(3000, function() {
+  console.log('HTTPS server running on port 3000');
+});
 
 module.exports = app
 
