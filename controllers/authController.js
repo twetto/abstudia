@@ -4,6 +4,9 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 
 passport.use(new LocalStrategy(function(username, password, done) {
+  if (typeof username !== 'string' || typeof password !== 'string') {
+    return done(null, false, { message: 'Invalid credentials.' });
+  }
   User.findOne({ username: username }).then(user => {
     if (!user) { return done(null, false, { message: 'Incorrect username.' }); }
     bcrypt.compare(password, user.password, function(err, res) {
@@ -41,7 +44,7 @@ exports.login = (req, res, next) => {
   })(req, res, next);
 };
 
-exports.logout = (req, res) => {
+exports.logout = (req, res, next) => {
   req.logout(function(err) {
     if (err) { return next(err); }
     res.json({ message: 'Logged out' });
@@ -54,6 +57,10 @@ exports.ensureAuthenticated = (req, res, next) => {
   } else {
     res.status(401).json({ message: "Unauthorized" });
   }
+};
+
+exports.me = (req, res) => {
+  res.json({ id: req.user.id, username: req.user.username });
 };
 
 // Add other auth-related functions (signup) here

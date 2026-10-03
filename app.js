@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const path = require('path');
 const express = require('express');
 const session = require('express-session');
 
@@ -11,7 +12,8 @@ const authRouter = require('./routes/authRoutes');
 const authController = require('./controllers/authController');
 
 const app = express();
-const port = 3000;
+app.set('trust proxy', 'loopback');  // nginx on the same host
+const port = process.env.PORT || 3000;
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
@@ -44,11 +46,18 @@ app.use(authController.passport.session());
 app.use('/auth', authRouter);
 app.use('/tasks', taskRouter);
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+// Serve the built web client (client/dist) from the same origin as the API
+const clientDir = path.join(__dirname, 'client', 'dist');
+app.use(express.static(clientDir));
+
+// Global error handler: async route errors land here instead of crashing
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ message: 'Internal server error' });
 });
 
-app.listen(port, () => {
+// Bind to loopback only: nginx is the sole public entry point (HTTPS)
+app.listen(port, '127.0.0.1', () => {
   console.log(`App listening at http://localhost:${port}`);
 });
 

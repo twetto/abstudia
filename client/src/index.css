@@ -1,0 +1,179 @@
+:root {
+  --bg: #cfc7be;
+  --surface: #e6e3dc;
+  --input: #f8f8f6;
+  --text: #2b2724;
+  --muted: #6b635b;
+  --accent: #5b8089;
+  --q-do: #ff5e4b;
+  --q-plan: #83a598;
+  --q-delegate: #ff9034;
+  --q-drop: #a89984;
+  --radius: 6px;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #282624;
+    --surface: #35322f;
+    --input: #403c38;
+    --text: #ebe6de;
+    --muted: #a89f94;
+    --accent: #83a5ae;
+    --q-do: #c9473a;
+    --q-plan: #5f7f73;
+    --q-delegate: #c46e28;
+    --q-drop: #7c7062;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.4 system-ui, sans-serif;
+}
+
+input, button { font: inherit; color: inherit; }
+
+input:not([type="checkbox"]) {
+  background: var(--input);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  padding: 8px 10px;
+  min-width: 0;
+}
+
+input:focus-visible, button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+button {
+  background: var(--input);
+  border: 0;
+  border-radius: var(--radius);
+  padding: 8px 14px;
+  cursor: pointer;
+}
+button:hover:not(:disabled) { background: var(--accent); color: white; }
+button:disabled { opacity: .5; cursor: default; }
+
+button.link {
+  background: none;
+  padding: 4px 6px;
+  color: var(--muted);
+  text-decoration: underline;
+}
+button.link:hover { background: none; color: var(--text); }
+
+.app {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.topbar h1 { font-size: 1.3rem; margin: 0; }
+.spacer { flex: 1; }
+
+.tabs { display: flex; gap: 4px; }
+.tabs button { background: transparent; }
+.tabs button[aria-selected="true"] { background: var(--surface); }
+.tabs button[aria-selected="true"]:hover { color: inherit; }
+
+.error {
+  background: var(--q-do);
+  color: white;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  margin: 0 0 12px;
+}
+.error .link { color: white; }
+
+.add-task {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  background: var(--surface);
+  padding: 10px;
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+}
+.add-task input:not([type="checkbox"]) { flex: 1 1 200px; }
+.flag { display: flex; align-items: center; gap: 4px; user-select: none; }
+
+.task-list { list-style: none; margin: 0; padding: 0; }
+
+.task {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  margin-bottom: 6px;
+}
+.task .title { flex: 1; overflow-wrap: anywhere; }
+.task .delete {
+  background: none;
+  padding: 0 8px;
+  font-size: 1.2rem;
+  color: var(--muted);
+}
+.task .delete:hover { background: var(--q-do); color: white; }
+
+.badge {
+  font-size: .75rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  color: white;
+}
+.badge.urgent { background: var(--q-delegate); }
+.badge.important { background: var(--q-plan); }
+
+.empty { color: var(--muted); text-align: center; padding: 32px 0; }
+
+.matrix {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.quadrant {
+  border-radius: var(--radius);
+  padding: 10px;
+  min-height: 180px;
+}
+.quadrant h2 { margin: 0 0 8px; font-size: 1rem; color: white; }
+.quadrant h2 small { font-weight: normal; opacity: .85; margin-left: 6px; }
+.quadrant .task .badge { display: none; }
+.quadrant.do { background: var(--q-do); }
+.quadrant.plan { background: var(--q-plan); }
+.quadrant.delegate { background: var(--q-delegate); }
+.quadrant.drop { background: var(--q-drop); }
+
+@media (max-width: 600px) {
+  .matrix { grid-template-columns: 1fr; }
+  .topbar h1 { display: none; }
+}
+
+.login {
+  max-width: 320px;
+  margin: 15vh auto 0;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.login h1 { margin: 0; text-align: center; }
+.login .motto { margin: 0 0 8px; text-align: center; color: var(--muted); font-style: italic; }

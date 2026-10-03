@@ -7,7 +7,7 @@ exports.getTasks = async (req, res) => {
 };
 
 exports.createTask = async (req, res) => {
-  if (!req.body || req.body.title.trim() === "") {
+  if (!req.body || typeof req.body.title !== 'string' || req.body.title.trim() === "") {
     res.status(400).json({ message: "Invalid task input" });
     return;
   }
